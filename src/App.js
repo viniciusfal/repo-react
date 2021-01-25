@@ -6,13 +6,14 @@ import "./styles.css";
 
 function App() {
   //Criar uma rota get para listar os repositories
-  const [ repositories, setRepositories ] = useState([]); //useState serve para me mostrar algo, ele me dar o valor inicia, padrão que no caso é repositories; e me permite usar o set, que atualiza esse meu estado.
-  
+  const [ repositories, setRepositories ] = useState([]); 
+
   useEffect(() => {
     api.get("/repositories").then((response) =>{
       setRepositories(response.data) //estado atualizado
     });
   }, []);
+
 
   //Criar uma rota que me permita adicionar um novo repository
   async function handleAddRepository() {
@@ -26,7 +27,8 @@ function App() {
       setRepositories([ ...repositories ,repository])
 
   };
-  
+
+
   //Criar uma rota que me permita deletar um desses repository listados
   async function handleRemoveRepository(id) {
     await api.delete(`/repositories/${id}`);
@@ -37,14 +39,14 @@ function App() {
     ))
   }
 
-
+  
   //Colocar key
   //mostrar pelo objeto title o repository
   //mapear repository
   return (
     <div>
       <ul data-testid="repository-list">
-       {repositories.map(repository => (//recebe uma chave por conta sintaxe react. permitindo usar html
+       {repositories.map(repository => (
           <li key = {repository.id}>
             {repository.title}
             
@@ -55,7 +57,7 @@ function App() {
        ))}
      </ul>
       <button onClick={handleAddRepository}>Adicionar</button>
-      
+
     </div>
   );
 }

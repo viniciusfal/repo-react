@@ -18,21 +18,23 @@ function App() {
   async function handleAddRepository() {
     
       const response = await api.post("/repositories", {
-        title: "Desafio React.js" ,
-        url: "https://github.com/viniciusfal",
-        techs: ["nodejs", "React.js"],
+        title: "store-repository",
+        url: "https://github.com/viniciusfal/store-repository",
+        techs: ["Node.js", "React.js"],
       })
-
       const repository = response.data;
-      setRepositories([...repositories, repository]);
+      setRepositories([ ...repositories ,repository])
+
   };
   
-
-
-
   //Criar uma rota que me permita deletar um desses repository listados
   async function handleRemoveRepository(id) {
-    
+    await api.delete(`/repositories/${id}`);
+
+    setRepositories(repositories.filter(
+      repository => repository.id != id
+      
+    ))
   }
 
 
@@ -42,18 +44,18 @@ function App() {
   return (
     <div>
       <ul data-testid="repository-list">
-       {repositories.map((repository) => (//recebe uma chave por conta sintaxe react. permitindo usar html
+       {repositories.map(repository => (//recebe uma chave por conta sintaxe react. permitindo usar html
           <li key = {repository.id}>
             {repository.title}
             
-          <button onClick={() => handleRemoveRepository(1)}>
+          <button onClick={() => handleRemoveRepository(repository.id)}>
             Remover
           </button>
         </li>
        ))}
-      </ul>
-
+     </ul>
       <button onClick={handleAddRepository}>Adicionar</button>
+      
     </div>
   );
 }
